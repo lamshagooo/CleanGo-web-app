@@ -1,0 +1,61 @@
+
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+
+                    <p class="subtitle">WELCOME BACK</p>
+                    <h1 class="h2 mb-3">Log in to CleanGo</h1>
+
+                    <form>
+                        <div class="mb-3">
+                            <label for="login-email"
+                                   class="form-label">Email</label>
+                            <input type="email"
+                                   id="login-email"
+                                   class="form-control"
+                                   placeholder="Enter your email"
+                                    pattern="[^@ ]+@[^@ ]+\.[a-zA-Z]{2,}"
+                                    title="Enter a valid email, e.g. name@gmail.com"
+                                   required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="login-password"
+                                   class="form-label">Password</label>
+                            <input type="password"
+                                   id="login-password"
+                                   class="form-control"
+                                   placeholder="Enter your password"
+                                   minlength="8"
+                                   pattern="(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}"
+                                    title="Password must contain at least 8 characters, one uppercase letter and one special character."
+                                    
+                                    required>
+                                    <div class="form-text">
+                                        Minimum 8 characters, one uppercase letter
+                                        and one special character.
+                                    </div>
+                                </div>
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+                            Log In
+                        </button>
+                    </form>
+
+                    <p class="text-center mt-4 mb-0">
+                        Don't have an account?
+                        <a href="#register">Sign up</a>
+                    </p>
+
+                    <p class="small text-muted text-center mt-3">
+                        Demo only — authentication is not active yet.
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
