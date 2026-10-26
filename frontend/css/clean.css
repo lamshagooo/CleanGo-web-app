@@ -1,0 +1,152 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F7F5EF;
+    color: #273B31;
+}
+
+/* Navigation */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 8%;
+    background-color: #F7F5EF;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #273B31;
+    text-decoration: none;
+}
+
+.logo span {
+    color: #718F79;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #273B31;
+    font-size: 14px;
+}
+
+.login-btn,
+.primary-btn {
+    background-color: #718F79;
+    color: white !important;
+    padding: 14px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Hero Section */
+
+.hero {
+    display: flex;
+    align-items: center;
+    min-height: 550px;
+    padding: 40px 8%;
+    gap: 60px;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.subtitle {
+    color: #718F79;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.15;
+    margin-bottom: 25px;
+}
+
+.description {
+    color: #58665C;
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+.hero-image {
+    flex: 1;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 20px 5%;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .hero {
+        flex-direction: column;
+        padding: 30px 5%;
+        gap: 30px;
+    }
+
+    .hero-image,
+    .hero-text {
+        width: 100%;
+    }
+
+    .hero-image img {
+        height: 300px;
+    }
+}
+
+
+/* Cleaner Profile */
+
+.cleaner-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #DCE8DE;
+    color: #52765B;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
