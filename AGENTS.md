@@ -45,3 +45,60 @@ book cleaning services.
 - Avoid unnecessary libraries and complex frameworks.
 - Follow the professor's milestone requirements.
 - Document important AI assistance in docs/AI_LOG.md.
+
+----------------------------------------------------
+## Milestone 2 – Database and DAO Layer
+
+### Database
+- Database name: cleango_db
+- Database system: MySQL / MariaDB
+- Database connection: PHP PDO
+- Database schema and sample data: database/cleango.sql
+
+The database contains six related tables:
+1. users
+2. cleaner_profiles
+3. services
+4. cleaner_services
+5. bookings
+6. reviews
+
+The tables use primary keys and foreign keys to define relationships.
+
+### DAO Layer
+The DAO (Data Access Object) layer is located in backend/dao.
+
+BaseDao.php contains reusable CRUD methods:
+- insert() – Create a new record
+- getAll() – Read all records
+- getById() – Read one record
+- update() – Update a record
+- delete() – Delete a record
+
+The project includes six DAO classes:
+- UserDao
+- CleanerProfileDao
+- ServiceDao
+- CleanerServiceDao
+- BookingDao
+- ReviewDao
+
+Each DAO extends BaseDao and can include additional methods for its table.
+
+CleanerServiceDao uses special methods because the cleaner_services table has a composite primary key.
+
+### Database Security
+- Use PDO prepared statements for database queries.
+- Validate column names before INSERT and UPDATE operations.
+- Store local database credentials in backend/config/config.php.
+- Do not commit config.php to GitHub.
+- Use backend/config/config.example.php as a configuration template.
+- Never store plain-text passwords in the database.
+
+### Testing
+The DAO layer was tested using PHP CLI and backend/test_connection.php.
+
+CRUD operations were successfully tested for all six entities.
+
+Temporary records were created, updated, and deleted during testing.
+

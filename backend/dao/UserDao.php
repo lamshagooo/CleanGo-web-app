@@ -1,0 +1,28 @@
+<?php
+
+require_once __DIR__ . '/BaseDao.php';
+
+class UserDao extends BaseDao {
+
+    protected $allowedColumns = [
+        'name',
+        'email',
+        'password',
+        'role'
+    ];
+
+    public function __construct() {
+        parent::__construct("users");
+    }
+
+    public function getByEmail($email) {
+
+        $stmt = $this->connection->prepare(
+            "SELECT * FROM users WHERE email = :email"
+        );
+
+        $stmt->execute(['email' => $email]);
+
+        return $stmt->fetch();
+    }
+}
