@@ -149,3 +149,156 @@ All six DAO classes passed the CRUD tests.
 Milestone 2 includes the MySQL database schema, sample data, PDO connection, reusable BaseDao class, and six DAO classes.
 
 The service layer, REST API endpoints, and frontend integration are planned for the next milestones.
+
+----------------------------------------------------
+## Milestone 3 – Business Logic, REST API, OpenAPI and External API
+
+### AI Tools Used
+- ChatGPT
+- Codex
+- Claude (Anthropic)
+
+### What Each Tool Helped With
+
+**ChatGPT** helped me read the official requirements, check which milestone is
+currently active, choose a relevant external API, and write instructions for Codex.
+
+**Codex** implemented the first version of Milestone 3 in the local project:
+- six Service classes with validation (UserService, CleanerProfileService,
+  ServiceService, CleanerServiceService, BookingService, ReviewService)
+- FlightPHP JSON routes for all CRUD operations
+- OpenAPI file (backend/docs/openapi.json) and Swagger UI (/docs)
+- LocationService with OpenStreetMap Nominatim address search
+- test scripts (backend/tests/smoke.php and a fake Nominatim server)
+
+**Claude** reviewed the Codex code, made it simpler to explain, tested everything
+on my XAMPP installation, fixed the problems that appeared there, and added
+error logging for the external API.
+
+### Important Prompts
+
+**Prompt 1 (ChatGPT):**
+"Check whether it is now Milestone 3 or Milestone 4."
+
+Result: ChatGPT checked the official document. The current milestone is
+Milestone 3 (deadline 23.11.2026 at 08:00).
+
+**Prompt 2 (instructions sent to Codex):**
+"Please do not implement the weather forecast feature. It is not relevant to
+CleanGo. Instead, use the OpenStreetMap Nominatim API to search for cleaning
+locations by address. Keep the implementation very simple: the user enters an
+address, the backend calls the external API, the API returns matching location
+information. Handle errors and timeouts. Document the endpoint in Swagger.
+Remember that I am a second-year student and I must explain every part of this
+project during my oral defense."
+
+Result: Codex implemented GET /locations/search with Nominatim.
+
+**Prompt 3 (Claude):**
+"Help me finish Milestone 3. Everything must be very simple because I am a
+student and I must defend it."
+
+Result: Claude simplified the validation code and tested the API on XAMPP.
+
+**Prompt 4 (Claude):**
+"Make sure there are no unnecessary comments in the code."
+
+Result: Explanatory comments added by AI were removed from the Milestone 3 code.
+
+### AI Mistakes and Corrections
+
+**Mistake 1 – Irrelevant external API**
+
+The first plan for the external API was a weather forecast.
+
+How it was detected:
+I noticed that a weather forecast has no real use in an application for booking
+cleaning services.
+
+Correction:
+Codex was told not to implement the weather feature. OpenStreetMap Nominatim
+address search was used instead, because a cleaner needs to know the address
+of the cleaning location.
+
+**Mistake 2 – HTTPS requests did not work on XAMPP**
+
+Codex used the cURL option `CURLSSLOPT_NATIVE_CA` to trust HTTPS certificates
+on Windows. My XAMPP uses PHP 8.0.30 with cURL 7.76.1, where this option does
+not exist. Because of that, every real address search returned
+"The address provider is unavailable." (HTTP 502).
+
+How it was detected:
+The live search for "Vijecnica, Sarajevo" was tested through the API on XAMPP.
+A temporary debug message showed the real cURL error:
+"SSL certificate problem: unable to get local issuer certificate".
+
+Correction:
+LocationService now uses the certificate file that comes with XAMPP
+(`C:/xampp/apache/bin/curl-ca-bundle.crt`). After this change, the live search
+returned five matches.
+
+**Mistake 3 – Wrong guess while debugging**
+
+Before the real error message was visible, Claude guessed that the problem was
+a proxy setting and added `CURLOPT_PROXY`. This did not fix anything.
+
+How it was detected:
+The API still returned 502. The debug message then showed that the real
+problem was the SSL certificate.
+
+Correction:
+The proxy option was removed and the certificate problem was fixed instead.
+
+**Mistake 4 – Tests written for a newer PHP version**
+
+Codex ran its tests with a newer PHP version. On my XAMPP (PHP 8.0) the
+database returns numbers as text, for example "2" instead of 2. The test
+compared values with `===`, so the CRUD test failed even though the update
+worked. The timeout test also failed, because the test waited only 10 seconds,
+the same time as the API timeout.
+
+How it was detected:
+The CRUD test stopped with "experience_years did not update", and the location
+test returned status 0 instead of 504.
+
+Correction:
+The update check now uses `==`, and the test waits up to 20 seconds.
+
+**Mistake 5 – Code too complex for my level**
+
+Some Codex code was correct but hard to explain, for example long regular
+expressions for numbers, dates and times, and file locking for the
+one-request-per-second limit.
+
+How it was detected:
+While reviewing the code before the oral defense.
+
+Correction:
+The checks now use `filter_var()`, `is_numeric()` and
+`DateTime::createFromFormat()`. The request limit uses a simple file with the
+time of the last request. The same rules were tested again.
+
+### External API Error Log
+
+Failed Nominatim requests (timeout, provider error, invalid data) are written
+to `backend/logs/external-api.log`. The user receives a short error message,
+and the rest of the API keeps working.
+
+### Verification
+
+All tests below were run on my computer with XAMPP (PHP 8.0.30, MySQL on port
+3307, database cleango_db):
+
+- PHP lint passed for all backend PHP files.
+- `php backend/tests/smoke.php http://127.0.0.1:8093 crud` passed. It creates,
+  reads, updates and deletes records for all six entities and checks invalid
+  input, duplicates, missing records and foreign-key conflicts. Test records
+  are deleted at the end.
+- `php backend/tests/smoke.php http://127.0.0.1:8095 locations` passed with the
+  fake Nominatim server (match, empty list, 429, invalid data, provider error,
+  timeout).
+- The error log contained entries for invalid data, provider error and timeout.
+- The live Nominatim search for "Vijecnica, Sarajevo" returned five matches.
+- Swagger UI (/docs) and /openapi.json returned 200.
+- Git does not track backend/config/config.php, vendor/ or log files.
+
