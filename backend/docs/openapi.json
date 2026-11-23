@@ -1,0 +1,766 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CleanGo API",
+    "version": "1.0.0",
+    "description": "Milestone 3 API for local testing. Authentication and SPA integration belong to Milestone 4."
+  },
+  "servers": [{"url":"./"}],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["users"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/User"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["users"],
+        "summary": "Create a record",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UserCreate"}}}},
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/users/{id}": {
+      "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"integer","minimum":1,"maximum":2147483647}}],
+      "get": {
+        "tags": ["users"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {"description":"Record","content":{"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["users"],
+        "summary": "Update the fields you send",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UserUpdate"}}}},
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/User"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["users"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/cleaner-profiles": {
+      "get": {
+        "tags": ["cleaner-profiles"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CleanerProfile"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["cleaner-profiles"],
+        "summary": "Create a record",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerProfileCreate"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerProfile"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/cleaner-profiles/{id}": {
+      "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"integer","minimum":1,"maximum":2147483647}}],
+      "get": {
+        "tags": ["cleaner-profiles"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {
+            "description": "Record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerProfile"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["cleaner-profiles"],
+        "summary": "Update the fields you send",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerProfileUpdate"}}}
+        },
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerProfile"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["cleaner-profiles"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "tags": ["services"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CleaningService"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["services"],
+        "summary": "Create a record",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleaningServiceCreate"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleaningService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/services/{id}": {
+      "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"integer","minimum":1,"maximum":2147483647}}],
+      "get": {
+        "tags": ["services"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {
+            "description": "Record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleaningService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["services"],
+        "summary": "Update the fields you send",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleaningServiceUpdate"}}}
+        },
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleaningService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["services"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/cleaner-services": {
+      "get": {
+        "tags": ["cleaner-services"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CleanerService"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["cleaner-services"],
+        "summary": "Create a record",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerServiceCreate"}}}
+        },
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/cleaner-services/{cleanerId}/{serviceId}": {
+      "parameters": [
+        {
+          "name": "cleanerId",
+          "in": "path",
+          "required": true,
+          "schema": {"type":"integer","minimum":1,"maximum":2147483647}
+        },
+        {
+          "name": "serviceId",
+          "in": "path",
+          "required": true,
+          "schema": {"type":"integer","minimum":1,"maximum":2147483647}
+        }
+      ],
+      "get": {
+        "tags": ["cleaner-services"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {
+            "description": "Record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["cleaner-services"],
+        "summary": "Change the service assigned to this cleaner",
+        "requestBody": {
+          "required": true,
+          "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerServiceUpdate"}}}
+        },
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/CleanerService"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["cleaner-services"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/bookings": {
+      "get": {
+        "tags": ["bookings"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Booking"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["bookings"],
+        "summary": "Create a record",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BookingCreate"}}}},
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/bookings/{id}": {
+      "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"integer","minimum":1,"maximum":2147483647}}],
+      "get": {
+        "tags": ["bookings"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {
+            "description": "Record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["bookings"],
+        "summary": "Update the fields you send",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/BookingUpdate"}}}},
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Booking"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["bookings"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/reviews": {
+      "get": {
+        "tags": ["reviews"],
+        "summary": "List records",
+        "responses": {
+          "200": {
+            "description": "Records",
+            "content": {"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Review"}}}}
+          },
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "post": {
+        "tags": ["reviews"],
+        "summary": "Create a record",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ReviewCreate"}}}},
+        "responses": {
+          "201": {
+            "description": "Record created",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Review"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/reviews/{id}": {
+      "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"integer","minimum":1,"maximum":2147483647}}],
+      "get": {
+        "tags": ["reviews"],
+        "summary": "Read a record",
+        "responses": {
+          "200": {"description":"Record","content":{"application/json":{"schema":{"$ref":"#/components/schemas/Review"}}}},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "patch": {
+        "tags": ["reviews"],
+        "summary": "Update the fields you send",
+        "requestBody": {"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ReviewUpdate"}}}},
+        "responses": {
+          "200": {
+            "description": "Updated record",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Review"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      },
+      "delete": {
+        "tags": ["reviews"],
+        "summary": "Delete a record",
+        "responses": {
+          "204": {"description":"Deleted"},
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "404": {"$ref":"#/components/responses/NotFound"},
+          "409": {"$ref":"#/components/responses/Conflict"},
+          "500": {"$ref":"#/components/responses/ServerError"}
+        }
+      }
+    },
+    "/locations/search": {
+      "get": {
+        "tags": ["locations"],
+        "summary": "Find locations by public address",
+        "responses": {
+          "200": {
+            "description": "Matching locations. An empty matches array means no results.",
+            "content": {"application/json":{"schema":{"$ref":"#/components/schemas/LocationResults"}}}
+          },
+          "400": {"$ref":"#/components/responses/BadRequest"},
+          "429": {"$ref":"#/components/responses/RateLimit"},
+          "500": {"$ref":"#/components/responses/ServerError"},
+          "502": {"$ref":"#/components/responses/ProviderError"},
+          "504": {"$ref":"#/components/responses/ProviderTimeout"}
+        },
+        "description": "Manual demo search using OpenStreetMap Nominatim. Use public addresses only. Address data © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright). See the [usage policy](https://operations.osmfoundation.org/policies/nominatim/).",
+        "parameters": [
+          {
+            "name": "address",
+            "in": "query",
+            "required": true,
+            "schema": {"type":"string","maxLength":200,"minLength":3},
+            "example": "Vijecnica, Sarajevo"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["error"],
+        "properties": {"error":{"type":"string"}}
+      },
+      "LocationResults": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["matches","attribution","attribution_url"],
+        "properties": {
+          "matches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["address","latitude","longitude"],
+              "properties": {"address":{"type":"string"},"latitude":{"type":"number"},"longitude":{"type":"number"}}
+            }
+          },
+          "attribution": {"type":"string"},
+          "attribution_url": {"type":"string","format":"uri"}
+        }
+      },
+      "User": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","name","email","role"],
+        "properties": {
+          "id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "email": {"type":"string","maxLength":150,"format":"email"},
+          "role": {"type":"string","enum":["customer","cleaner","admin"]}
+        }
+      },
+      "UserCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name","email","password","role"],
+        "properties": {
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "email": {"type":"string","maxLength":150,"format":"email"},
+          "password": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 8,
+            "writeOnly": true,
+            "format": "password",
+            "description": "At least 8 characters.",
+            "example": "example-password"
+          },
+          "role": {"type":"string","enum":["customer","cleaner","admin"]}
+        }
+      },
+      "UserUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "email": {"type":"string","maxLength":150,"format":"email"},
+          "password": {
+            "type": "string",
+            "maxLength": 255,
+            "minLength": 8,
+            "writeOnly": true,
+            "format": "password",
+            "description": "At least 8 characters.",
+            "example": "example-password"
+          },
+          "role": {"type":"string","enum":["customer","cleaner","admin"]}
+        },
+        "minProperties": 1
+      },
+      "CleanerProfile": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","user_id","hourly_rate","bio","location","experience_years"],
+        "properties": {
+          "id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a user with the cleaner role."},
+          "hourly_rate": {"type":"string","example":"25.00"},
+          "bio": {"type":"string","maxLength":16000,"nullable":true},
+          "location": {"type":"string","maxLength":100,"nullable":true},
+          "experience_years": {"type":"integer","minimum":0,"maximum":2147483647,"default":0}
+        }
+      },
+      "CleanerProfileCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["user_id","hourly_rate"],
+        "properties": {
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a user with the cleaner role."},
+          "hourly_rate": {"type":"number","minimum":0},
+          "bio": {"type":"string","maxLength":16000,"nullable":true},
+          "location": {"type":"string","maxLength":100,"nullable":true},
+          "experience_years": {"type":"integer","minimum":0,"maximum":2147483647,"default":0}
+        }
+      },
+      "CleanerProfileUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a user with the cleaner role."},
+          "hourly_rate": {"type":"number","minimum":0},
+          "bio": {"type":"string","maxLength":16000,"nullable":true},
+          "location": {"type":"string","maxLength":100,"nullable":true},
+          "experience_years": {"type":"integer","minimum":0,"maximum":2147483647,"default":0}
+        },
+        "minProperties": 1
+      },
+      "CleaningService": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","name","description","base_price"],
+        "properties": {
+          "id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "description": {"type":"string","maxLength":16000,"nullable":true},
+          "base_price": {"type":"string","example":"25.00"}
+        }
+      },
+      "CleaningServiceCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name","base_price"],
+        "properties": {
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "description": {"type":"string","maxLength":16000,"nullable":true},
+          "base_price": {"type":"number","minimum":0}
+        }
+      },
+      "CleaningServiceUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": {"type":"string","maxLength":100,"minLength":1},
+          "description": {"type":"string","maxLength":16000,"nullable":true},
+          "base_price": {"type":"number","minimum":0}
+        },
+        "minProperties": 1
+      },
+      "CleanerService": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cleaner_id","service_id"],
+        "properties": {
+          "cleaner_id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "service_id": {"type":"integer","minimum":1,"maximum":2147483647}
+        }
+      },
+      "CleanerServiceCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cleaner_id","service_id"],
+        "properties": {
+          "cleaner_id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "service_id": {"type":"integer","minimum":1,"maximum":2147483647}
+        }
+      },
+      "CleanerServiceUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["service_id"],
+        "properties": {"service_id":{"type":"integer","minimum":1,"maximum":2147483647}}
+      },
+      "Booking": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","user_id","cleaner_id","service_id","booking_date","booking_time","duration","status"],
+        "properties": {
+          "id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a customer."},
+          "cleaner_id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "service_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"The cleaner must offer this service."},
+          "booking_date": {"type":"string","format":"date","example":"2027-06-01"},
+          "booking_time": {"type":"string","example":"09:30"},
+          "duration": {"type":"integer","minimum":1,"maximum":2147483647,"description":"Duration in hours."},
+          "status": {"type":"string","enum":["pending","confirmed","completed","cancelled"],"default":"pending"}
+        }
+      },
+      "BookingCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["user_id","cleaner_id","service_id","booking_date","booking_time","duration"],
+        "properties": {
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a customer."},
+          "cleaner_id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "service_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"The cleaner must offer this service."},
+          "booking_date": {"type":"string","format":"date","example":"2027-06-01"},
+          "booking_time": {"type":"string","example":"09:30"},
+          "duration": {"type":"integer","minimum":1,"maximum":2147483647,"description":"Duration in hours."},
+          "status": {"type":"string","enum":["pending","confirmed","completed","cancelled"],"default":"pending"}
+        }
+      },
+      "BookingUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "user_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"ID of a customer."},
+          "cleaner_id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "service_id": {"type":"integer","minimum":1,"maximum":2147483647,"description":"The cleaner must offer this service."},
+          "booking_date": {"type":"string","format":"date","example":"2027-06-01"},
+          "booking_time": {"type":"string","example":"09:30"},
+          "duration": {"type":"integer","minimum":1,"maximum":2147483647,"description":"Duration in hours."},
+          "status": {"type":"string","enum":["pending","confirmed","completed","cancelled"],"default":"pending"}
+        },
+        "minProperties": 1
+      },
+      "Review": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id","booking_id","rating","comment"],
+        "properties": {
+          "id": {"type":"integer","minimum":1,"maximum":2147483647},
+          "booking_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647,
+            "description": "ID of a completed booking. Each booking can have one review."
+          },
+          "rating": {"type":"integer","minimum":1,"maximum":5},
+          "comment": {"type":"string","maxLength":16000,"nullable":true}
+        }
+      },
+      "ReviewCreate": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["booking_id","rating"],
+        "properties": {
+          "booking_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647,
+            "description": "ID of a completed booking. Each booking can have one review."
+          },
+          "rating": {"type":"integer","minimum":1,"maximum":5},
+          "comment": {"type":"string","maxLength":16000,"nullable":true}
+        }
+      },
+      "ReviewUpdate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "booking_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2147483647,
+            "description": "ID of a completed booking. Each booking can have one review."
+          },
+          "rating": {"type":"integer","minimum":1,"maximum":5},
+          "comment": {"type":"string","maxLength":16000,"nullable":true}
+        },
+        "minProperties": 1
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid input",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      },
+      "NotFound": {
+        "description": "Record not found",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      },
+      "Conflict": {
+        "description": "Duplicate value or related record prevents the change",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      },
+      "ServerError": {
+        "description": "Unexpected server error",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      },
+      "RateLimit": {
+        "description": "Wait one second before trying again",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}},
+        "headers": {"Retry-After":{"schema":{"type":"integer","example":1}}}
+      },
+      "ProviderError": {
+        "description": "The address provider failed or returned invalid data",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      },
+      "ProviderTimeout": {
+        "description": "The address provider timed out",
+        "content": {"application/json":{"schema":{"$ref":"#/components/schemas/Error"}}}
+      }
+    }
+  }
+}

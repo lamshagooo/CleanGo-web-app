@@ -27,6 +27,13 @@ book cleaning services.
 - backend/logs – Application logs
 - docs – Project documentation
 
+## Naming Conventions
+- PHP classes and files use PascalCase: `UserDao.php`, `UserService.php`.
+- DAO classes end with `Dao`, service classes end with `Service`.
+- Methods and variables use camelCase: `getById()`, `$cleanerId`.
+- Database tables, columns and JSON fields use snake_case: `cleaner_profiles`, `user_id`.
+- API routes use lowercase plural names with hyphens: `/cleaner-profiles`.
+
 ## Coding Rules
 1. Keep code simple and beginner-friendly.
 2. Use clear English names for variables and functions.
@@ -40,7 +47,10 @@ book cleaning services.
 10. Add comments where they help explain the code.
 
 ## AI Usage Rules
+- AI tools used in this project: ChatGPT, Codex and Claude.
 - AI can help explain, write, and debug code.
+- Keep generated code simple enough for a second-year student to explain.
+- Do not add comments that only repeat what the code does.
 - All generated code must be reviewed and tested.
 - Avoid unnecessary libraries and complex frameworks.
 - Follow the professor's milestone requirements.
@@ -101,4 +111,29 @@ The DAO layer was tested using PHP CLI and backend/test_connection.php.
 CRUD operations were successfully tested for all six entities.
 
 Temporary records were created, updated, and deleted during testing.
+
+----------------------------------------------------
+## Milestone 3 – Services, REST API, and OpenAPI
+
+- Keep business rules in `backend/services`. For new API code, only the
+  services may call the existing DAOs.
+- Register the FlightPHP JSON routes in `backend/routes`. The entry point is
+  `backend/public/index.php`.
+- Use GET to read, POST to create, PATCH to update supplied fields, and DELETE
+  to delete. Use both IDs for an individual cleaner-service assignment.
+- Hash user passwords before storing them and omit passwords from API responses.
+- Keep `backend/docs/openapi.json` in sync with routes and responses. Swagger UI
+  is served at `/docs`.
+- Address search uses Nominatim and is triggered by explicit user searches.
+  Use public addresses in demos and display OpenStreetMap attribution.
+  Keep the provider URL configurable and maintain the one-request-per-second
+  limit for the public service. Follow the
+  [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/).
+- Write failed Nominatim requests to `backend/logs/external-api.log` and return a
+  short error message to the user.
+- On XAMPP (PHP 8.0), HTTPS requests use `C:/xampp/apache/bin/curl-ca-bundle.crt`.
+- Keep local database settings in the ignored config file and keep API keys out of Git.
+- Do not add Milestone 4 features (JWT, middleware, frontend integration) yet.
+- Use `backend/tests/smoke.php` and the README instructions to verify changes.
+  Keep the existing Milestone 2 DAO test available.
 
